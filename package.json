@@ -1,6 +1,6 @@
 {
   "name": "fortysix-elks",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A wrapper for the 46elks (http://46elks.com) API. At the moment only sms functions are supported",
   "main": "index.js",
   "scripts": {
