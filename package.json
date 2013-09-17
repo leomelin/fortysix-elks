@@ -1,5 +1,5 @@
 {
-  "name": "46elks",
+  "name": "fortysix-elks",
   "version": "0.0.0",
   "description": "A wrapper for the 46elks (http://46elks.com) API. At the moment only sms functions are supported",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/calleerlandsson/46elks.git"
+    "url": "http://github.com/calleerlandsson/fortysix-elks.git"
   },
   "keywords": [
     "sms",
