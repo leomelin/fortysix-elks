@@ -1,3 +1,4 @@
+var nock   = require('nock');
 var Client = require('../../lib/client');
 
 describe('Client', function() {
@@ -31,5 +32,78 @@ describe('Client', function() {
       new Client('user', undefined);
     }).should.not.throwError();
     done();
+  });
+
+  describe('sendSMS', function() {
+    it('throws if \'from\' is not supplied', function(done) {
+      var c = new Client('user', 'pass');
+      (function(){
+        c.sendSMS(undefined, '+46703427085', 'Hej!', function() {});
+      }).should.throwError(/'from' was not supplied/);
+      done();
+    });
+
+    it('throws if \'to\' is not supplied', function(done) {
+      var c = new Client('user', 'pass');
+      (function(){
+        c.sendSMS('Calle', undefined, 'Hej!', function() {});
+      }).should.throwError(/'to' was not supplied/);
+      done();
+    });
+
+    it('throws if \'message\' is not supplied', function(done) {
+      var c = new Client('user', 'pass');
+      (function(){
+        c.sendSMS('Calle', '+46703427085', undefined, function() {});
+      }).should.throwError(/'message' was not supplied/);
+      done();
+    });
+
+    it('throws if \'from\' is longer than 11 characters', function(done) {
+      var c = new Client('user', 'pass');
+      (function(){
+        c.sendSMS('abcdefghijkl', '+46703427085', 'Hej!', function() {});
+      }).should.throwError(/'from' can't be longer than 11 charcters/);
+      done();
+    });
+
+    it('throws if \'from\' contains illegal characters', function(done) {
+      var c = new Client('user', 'pass');
+      (function(){
+        c.sendSMS('a.asd', '+46703427085', 'Hej!', function() {});
+      }).should.throwError(/'from' can only contain a-z, A-Z and 0-9/);
+      done();
+    });
+
+    it('sends a request to the 46elks API', function(done) {
+      var c = new Client('user', 'pass');
+      var req = nock('https://api.46elks.com')
+                  .post('/a1/SMS', {
+                    from: 'Calle',
+                    to: '+46703427085',
+                    message: 'Hej!'
+                  })
+                  .reply(200);
+      c.sendSMS('Calle', '+46703427085', 'Hej!', function(err) {
+        if (err) throw err;
+        req.isDone().should.be.true;
+        done();
+      });
+    });
+
+    it('errors if the response code from 46elks wasn\'t 200', function(done) {
+      var c = new Client('user', 'pass');
+      var req = nock('https://api.46elks.com')
+                  .post('/a1/SMS', {
+                    from: 'Calle',
+                    to: '+46703427085',
+                    message: 'Hej!'
+                  })
+                  .reply(503);
+      c.sendSMS('Calle', '+46703427085', 'Hej!', function(err) {
+        err.message.should.match(/responded with code 503/);
+        done();
+      });
+    });
   });
 });
