@@ -1,0 +1,16 @@
+{
+  "name": "46elks",
+  "version": "0.0.0",
+  "description": "A wrapper for the 46elks (http://46elks.com) API. At the moment only sms functions are supported",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "http://github.com/calleerlandsson/46elks.git"
+  },
+  "keywords": ["sms", "texting"],
+  "author": "calleerlandsson",
+  "license": "BSD"
+}
