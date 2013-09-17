@@ -43,22 +43,6 @@ describe('Client', function() {
       done();
     });
 
-    it('throws if \'to\' is not supplied', function(done) {
-      var c = new Client('user', 'pass');
-      (function(){
-        c.sendSMS('Calle', undefined, 'Hej!', function() {});
-      }).should.throwError(/'to' was not supplied/);
-      done();
-    });
-
-    it('throws if \'message\' is not supplied', function(done) {
-      var c = new Client('user', 'pass');
-      (function(){
-        c.sendSMS('Calle', '+46703427085', undefined, function() {});
-      }).should.throwError(/'message' was not supplied/);
-      done();
-    });
-
     it('throws if \'from\' is longer than 11 characters', function(done) {
       var c = new Client('user', 'pass');
       (function(){
@@ -72,6 +56,35 @@ describe('Client', function() {
       (function(){
         c.sendSMS('a.asd', '+46703427085', 'Hej!', function() {});
       }).should.throwError(/'from' can only contain a-z, A-Z and 0-9/);
+      done();
+    });
+
+    it('throws if \'to\' is not supplied', function(done) {
+      var c = new Client('user', 'pass');
+      (function(){
+        c.sendSMS('Calle', undefined, 'Hej!', function() {});
+      }).should.throwError(/'to' was not supplied/);
+      done();
+    });
+
+    it('throws if \'to\' contains more than 200 commas separated phone '+
+       'numbers', function(done) {
+      var to = '+46703427085';
+      for (var i = 0; i < 200; i++) {
+        to += ',+46703427085';
+      }
+      var c = new Client('user', 'pass');
+      (function(){
+        c.sendSMS('Calle', to, 'Hej!', function() {});
+      }).should.throwError(/'to' can't contain more than 200 numbers/);
+      done();
+    });
+
+    it('throws if \'message\' is not supplied', function(done) {
+      var c = new Client('user', 'pass');
+      (function(){
+        c.sendSMS('Calle', '+46703427085', undefined, function() {});
+      }).should.throwError(/'message' was not supplied/);
       done();
     });
 
