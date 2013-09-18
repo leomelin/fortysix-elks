@@ -27,12 +27,6 @@ Changelog
 
 TODO
 ----
-* Handling of return data from the POST /SMS request. The data looks like this:
-  ```
-  {"direction": "outgoing", "from": "Calle", "created": "2013-09-18T06:55:54.431635", "to": "+46703****85", "cost": 3500, "message": "helloooo", "id": "sc591f694d80da1****c126ef3605466a"}
-  ```
-  It should be parsed to a js object and passed to the callback of the sendSMS
-  method.
 
 * Support for text message delivery reports.
 
