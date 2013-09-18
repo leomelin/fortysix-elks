@@ -38,7 +38,7 @@ describe('Client', function() {
     it('throws if \'from\' is not supplied', function(done) {
       var c = new Client('user', 'pass');
       (function(){
-        c.sendSMS(undefined, '+46703427085', 'Hej!', function() {});
+        c.sendSMS(undefined, '+4670****085', 'Hej!', function() {});
       }).should.throwError(/'from' was not supplied/);
       done();
     });
@@ -46,7 +46,7 @@ describe('Client', function() {
     it('throws if \'from\' is longer than 11 characters', function(done) {
       var c = new Client('user', 'pass');
       (function(){
-        c.sendSMS('abcdefghijkl', '+46703427085', 'Hej!', function() {});
+        c.sendSMS('abcdefghijkl', '+4670****085', 'Hej!', function() {});
       }).should.throwError(/'from' can't be longer than 11 charcters/);
       done();
     });
@@ -54,7 +54,7 @@ describe('Client', function() {
     it('throws if \'from\' contains illegal characters', function(done) {
       var c = new Client('user', 'pass');
       (function(){
-        c.sendSMS('a.asd', '+46703427085', 'Hej!', function() {});
+        c.sendSMS('a.asd', '+4670****085', 'Hej!', function() {});
       }).should.throwError(/'from' can only contain a-z, A-Z and 0-9/);
       done();
     });
@@ -69,9 +69,9 @@ describe('Client', function() {
 
     it('throws if \'to\' contains more than 200 commas separated phone '+
        'numbers', function(done) {
-      var to = '+46703427085';
+      var to = '+4670****085';
       for (var i = 0; i < 200; i++) {
-        to += ',+46703427085';
+        to += ',+4670****085';
       }
       var c = new Client('user', 'pass');
       (function(){
@@ -83,7 +83,7 @@ describe('Client', function() {
     it('throws if \'message\' is not supplied', function(done) {
       var c = new Client('user', 'pass');
       (function(){
-        c.sendSMS('Calle', '+46703427085', undefined, function() {});
+        c.sendSMS('Calle', '+4670****085', undefined, function() {});
       }).should.throwError(/'message' was not supplied/);
       done();
     });
@@ -93,11 +93,19 @@ describe('Client', function() {
       var req = nock('https://api.46elks.com')
                   .post('/a1/SMS', {
                     from: 'Calle',
-                    to: '+46703427085',
+                    to: '+4670****085',
                     message: 'Hej!'
                   })
-                  .reply(200);
-      c.sendSMS('Calle', '+46703427085', 'Hej!', function(err) {
+                  .reply(200, {
+                    direction: 'outgoing',
+                    from: 'Calle',
+                    created: '2013-09-18T06:55:54.431635',
+                    to: '+4670****085',
+                    cost: 3500,
+                    message: 'helloooo', 
+                    id: 'sc591f694d80da1****c126ef3605466a'
+                  });
+      c.sendSMS('Calle', '+4670****085', 'Hej!', function(err) {
         if (err) throw err;
         req.isDone().should.be.true;
         done();
@@ -109,12 +117,45 @@ describe('Client', function() {
       var req = nock('https://api.46elks.com')
                   .post('/a1/SMS', {
                     from: 'Calle',
-                    to: '+46703427085',
+                    to: '+4670****085',
                     message: 'Hej!'
                   })
                   .reply(503);
-      c.sendSMS('Calle', '+46703427085', 'Hej!', function(err) {
+      c.sendSMS('Calle', '+4670****085', 'Hej!', function(err) {
         err.message.should.match(/responded with code 503/);
+        done();
+      });
+    });
+
+    it('passes an object containing the data 46elks returned to the callback', function(done) {
+      var c = new Client('user', 'pass');
+      var req = nock('https://api.46elks.com')
+                  .post('/a1/SMS', {
+                    from: 'Calle',
+                    to: '+4670****085',
+                    message: 'Hej!'
+                  })
+                  .reply(200, {
+                    direction: 'outgoing',
+                    from: 'Calle',
+                    created: '2013-09-18T06:55:54.431635',
+                    to: '+4670****085',
+                    cost: 3500,
+                    message: 'helloooo', 
+                    id: 'sc591f694d80da1****c126ef3605466a'
+                  });
+      c.sendSMS('Calle', '+4670****085', 'Hej!', function(err, sms) {
+        if (err) throw err;
+        (sms.created instanceof Date).should.be.true;
+        sms.should.eql({
+          direction: 'outgoing',
+          from: 'Calle',
+          created: new Date('2013-09-18T06:55:54.431635'),
+          to: '+4670****085',
+          cost: 3500,
+          message: 'helloooo', 
+          id: 'sc591f694d80da1****c126ef3605466a'
+        });
         done();
       });
     });
