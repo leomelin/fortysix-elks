@@ -120,9 +120,9 @@ describe('Client', function() {
                     to: '+4670****085',
                     message: 'Hej!'
                   })
-                  .reply(503);
+                  .reply(403, 'Error message');
       c.sendSMS('Calle', '+4670****085', 'Hej!', function(err) {
-        err.message.should.match(/responded with code 503/);
+        err.message.should.match(/46elks error \(403\): Error message/);
         done();
       });
     });
