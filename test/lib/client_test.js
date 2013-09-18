@@ -2,21 +2,21 @@ var nock   = require('nock');
 var Client = require('../../lib/client');
 
 describe('Client', function() {
-  it('throws if username param isn\'t specified', function(done) {
+  it('throws if \'username\' isn\'t specified', function(done) {
     (function(){
       new Client(undefined, 'pass');
     }).should.throwError(/username/);
     done();
   });
 
-  it('throws if password param isn\'t specified', function(done) {
+  it('throws if \'password\' isn\'t specified', function(done) {
     (function(){
       new Client('user', undefined);
     }).should.throwError(/password/);
     done();
   });
 
-  it('doesn\'t throw when username param isn\'t specified if the '+
+  it('doesn\'t throw if \'username\' isn\'t specified if the '+
      'FORTYSIXELKS_USERNAME environment variable is defined', function(done) {
     process.env.FORTYSIXELKS_USERNAME = 'user';
     (function(){
@@ -25,7 +25,7 @@ describe('Client', function() {
     done();
   });
 
-  it('doesn\'t throw when password param isn\'t specified if the '+
+  it('doesn\'t throw if \'password\' isn\'t specified if the '+
      'FORTYSIXELKS_PASSWORD environment variable is defined', function(done) {
     process.env.FORTYSIXELKS_PASSWORD = 'pass';
     (function(){
