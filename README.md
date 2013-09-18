@@ -12,10 +12,10 @@ npm install fortysix-elks
 
 Changelog
 ---------
-### 0.0.2
+### 0.0.2 (2013-09-18)
 It is now possible to send text messages to multiple recipients.
 
-### 0.0.1
+### 0.0.1 (2013-09-18)
 Initial release.
 
 TODO
