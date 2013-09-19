@@ -18,6 +18,7 @@ Changelog
   for an explanation of this data.
 * Error messages from the 46elks API is now passed as a part of the Error
   object's message.
+* Support for text message delivery reports.
 
 ### 0.0.2 (2013-09-18)
 * It is now possible to send text messages to multiple recipients.
@@ -27,8 +28,6 @@ Changelog
 
 TODO
 ----
-
-* Support for text message delivery reports.
 
 * Support for phone number allocation.
 
