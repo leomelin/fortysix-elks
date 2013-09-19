@@ -112,6 +112,31 @@ describe('Client', function() {
       });
     });
 
+    it('passes the whendelivered param to 46elks if given', function(done) {
+      var c = new Client('user', 'pass');
+      var req = nock('https://api.46elks.com')
+                  .post('/a1/SMS', {
+                    from: 'Calle',
+                    to: '+4670****085',
+                    message: 'Hej!',
+                    whendelivered: 'http://google.com',
+                  })
+                  .reply(200, {
+                    direction: 'outgoing',
+                    from: 'Calle',
+                    created: '2013-09-18T06:55:54.431635',
+                    to: '+4670****085',
+                    cost: 3500,
+                    message: 'helloooo', 
+                    id: 'sc591f694d80da1****c126ef3605466a'
+                  });
+      c.sendSMS('Calle', '+4670****085', 'Hej!', 'http://google.com', function(err) {
+        if (err) throw err;
+        req.isDone().should.be.true;
+        done();
+      });
+    });
+
     it('errors if the response code from 46elks wasn\'t 200', function(done) {
       var c = new Client('user', 'pass');
       var req = nock('https://api.46elks.com')
