@@ -10,9 +10,35 @@ Install
 npm install fortysix-elks
 ```
 
+Usage
+-----
+
+### Set up the Client
+
+Require the fortysix-elks module and initalize a new client using your 46elks
+credentials. If the environment variables `FORTYSIXELKS_USERNAME` and
+`FORTYSIXELKS_PASSWORD` are set these two parameters can be omitted.
+
+```
+var fortysixElks = require('fortysix-elks');
+var fc = new fortysixElks.Client('46elks username', '46elks password');
+```
+
+### Send an SMS
+
+Please check the code comments for details of this functions parameters and the
+values passed to the callback.
+
+```
+fc.sendSMS('Sender', '+4670****085', 'Hello!', function(err, res) {
+  console.log(err);
+  console.log(res);
+});
+```
+
 Changelog
 ---------
-### 0.0.3 (in development)
+### 0.0.3 (2013-09-19)
 * The sendSMS() callback now receives a parsed version of the data that is
   returned by the 46elks API. Please see the comments in the code or the tests
   for an explanation of this data.
