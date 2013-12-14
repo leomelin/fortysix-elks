@@ -1,3 +1,4 @@
+[![Code Climate](https://codeclimate.com/github/calleerlandsson/fortysix-elks.png)](https://codeclimate.com/github/calleerlandsson/fortysix-elks)
 fortysix-elks
 =============
 
